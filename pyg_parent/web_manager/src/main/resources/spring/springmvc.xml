@@ -10,7 +10,6 @@
 
 	<!--加载属性资源文件-->
     <context:property-placeholder location="classpath:config/application.properties" />
-
 	<!--配置注解驱动-->
 	<mvc:annotation-driven>
 		<!--配置转换器converter-->
@@ -37,9 +36,9 @@
 
 	<!-- 引用dubbo 服务 -->
 	<dubbo:application name="pinyougou-manager-web" />
-	<!--配置连接zookeeper的ip地址和端口-->
+	<!--配置连接zookeeper的ip和端口-->
 	<dubbo:registry address="zookeeper://192.168.200.128:2181"/>
-	<!--配置包扫描, 只有在这个扫描到的包下面才可以注入dubbo的service服务对象-->
+	<!--配置包扫描,只有在这个扫描到的包下面才可以注入dubbo的service服务对象-->
 	<dubbo:annotation package="cn.itcast.core.controller" />
 	<!-- 超时全局设置   10分钟   check=false不检查服务提供方-->
 	<dubbo:consumer timeout="600000" check="false"/>

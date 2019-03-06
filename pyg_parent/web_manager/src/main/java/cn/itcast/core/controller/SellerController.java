@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * 商家管理
- */
 @RestController
 @RequestMapping("/seller")
 public class SellerController {
@@ -19,32 +16,35 @@ public class SellerController {
     @Reference
     private SellerService sellerService;
 
+    //分页查询数据
     @RequestMapping("/search")
-    public PageResult search(@RequestBody Seller seller, Integer page, Integer rows) {
-        PageResult pageResult = sellerService.findPage(seller, page, rows);
-        return pageResult;
+    public PageResult search(@RequestBody Seller seller,Integer page,Integer rows){
+        return sellerService.findPage(seller, page, rows);
+
     }
 
+    //查询单个数据详情
     @RequestMapping("/findOne")
-    public Seller findOne(String id) {
-        Seller one = sellerService.findOne(id);
-        return one;
+    public Seller findOne(String id){
+        Seller seller = sellerService.findOne(id);
+        return seller;
     }
 
     /**
      * 改变商家的审核状态
-     * @param sellerId  商家id, 也是商家登录的用户名
-     * @param status    商家的状态码
+     * @param sellerId  商家ID,也是商家登录的用户名
+     * @param status    商家状态码
      * @return
      */
     @RequestMapping("/updateStatus")
-    public Result updateStatus(String sellerId, String status) {
+    public Result updateStatus(String sellerId,String status){
         try {
-            sellerService.updateStatus(sellerId, status);
-            return new Result(true, "状态修改成功!");
+            sellerService.updateStatus(sellerId,status);
+            return new Result(true,"状态修改成功!");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "状态修改失败!");
+            return new Result(false,"状态修改失败!");
         }
+
     }
 }

@@ -1,5 +1,6 @@
 package cn.itcast.test;
 
+
 import cn.itcast.core.dao.good.BrandDao;
 import cn.itcast.core.pojo.good.Brand;
 import cn.itcast.core.pojo.good.BrandQuery;
@@ -19,40 +20,41 @@ public class TestDao {
     private BrandDao brandDao;
 
     @Test
-    public void testFindBrandOne() {
+    public void testFindBrandOne(){
         Brand brand = brandDao.selectByPrimaryKey(1L);
-        System.out.println("=====" + brand);
+        System.out.println("====="+brand);
+
     }
 
     @Test
-    public void testFindAll() {
+    public void testFindAll(){
         List<Brand> brands = brandDao.selectByExample(null);
-        System.out.println("=========" + brands);
+        System.out.println("====="+brands);
+
     }
 
-    /**
-     * 复杂查询
-     * select distinct id,name from tb_brand order by id desc
-     */
+    //复杂查询
     @Test
-    public void testFindByQuery() {
+    public void testFindByQuery(){
         //创建查询对象
         BrandQuery query = new BrandQuery();
-        //设置去重, 如果不设置默认为false
+        //设置去重,如果不设置默认为false
         query.setDistinct(true);
-        //设置需要查询的列名, 如果不设置默认是*
-        //query.setFields("id, name");
-        //设置根据id倒序排序
+        //设置需要查询的列名,如果不设置默认是*
+        query.setFields("id,name");
+        //设置排序
         query.setOrderByClause("id desc");
+
         //创建where条件对象
         BrandQuery.Criteria criteria = query.createCriteria();
+
         //根据名称模糊查询
         criteria.andNameLike("%联%");
         //根据首字母精确查询
         criteria.andFirstCharEqualTo("L");
 
-        //查询并返回结果
+        //查询 并 返回结果
         List<Brand> brands = brandDao.selectByExample(query);
-        System.out.println("=======" + brands);
+        System.out.println("====="+brands);
     }
 }

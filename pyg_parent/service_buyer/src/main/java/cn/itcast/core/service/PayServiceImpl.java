@@ -15,22 +15,17 @@ import java.util.Map;
 @Service
 public class PayServiceImpl implements PayService {
 
-    //微信公众账号或开放平台APP的唯一标识
     @Value("${appid}")
     private String appid;
 
-    //财付通平台的商户账号
     @Value("${partner}")
     private String partner;
 
-    //财付通平台的商户密钥
     @Value("${partnerkey}")
     private String partnerkey;
 
-    //回调地址
     @Value("${notifyurl}")
     private String notifyurl;
-
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -69,7 +64,6 @@ public class PayServiceImpl implements PayService {
             e.printStackTrace();
             return new HashMap<>();
         }
-
     }
 
     @Override
@@ -94,11 +88,11 @@ public class PayServiceImpl implements PayService {
             e.printStackTrace();
             return null;
         }
-
     }
 
     @Override
     public PayLog findPayLogFromRedisByUserName(String userName) {
+        System.out.println(1);
         PayLog payLog = (PayLog)redisTemplate.boundHashOps(Constants.REDIS_PAYLOG).get(userName);
         return payLog;
     }

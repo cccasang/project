@@ -15,11 +15,11 @@ public class AddressServiceImpl implements AddressService {
     private AddressDao addressDao;
 
     @Override
-    public List<Address> findAddressListByUserName(String userName) {
+    public List<Address> findAddressByUserName(String userName) {
         AddressQuery query = new AddressQuery();
         AddressQuery.Criteria criteria = query.createCriteria();
         criteria.andUserIdEqualTo(userName);
-        List<Address> addresses = addressDao.selectByExample(query);
-        return addresses;
+        List<Address> addressList = addressDao.selectByExample(query);
+        return addressList;
     }
 }

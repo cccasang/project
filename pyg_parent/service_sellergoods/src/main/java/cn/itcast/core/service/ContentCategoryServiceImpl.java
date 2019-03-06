@@ -19,28 +19,31 @@ public class ContentCategoryServiceImpl implements ContentCategoryService {
     @Autowired
     private ContentCategoryDao categoryDao;
 
+
     @Override
     public List<ContentCategory> findAll() {
         return categoryDao.selectByExample(null);
     }
 
     @Override
-    public PageResult search(Integer page, Integer rows, ContentCategory category) {
-        PageHelper.startPage(page, rows);
+    public PageResult search(Integer page, Integer rows, ContentCategory contentCategory) {
+        PageHelper.startPage(page,rows);
         ContentCategoryQuery query = new ContentCategoryQuery();
         ContentCategoryQuery.Criteria criteria = query.createCriteria();
-        if (category != null) {
-            if (category.getName() != null && !"".equals(category.getName())) {
-                criteria.andNameLike("%"+category.getName()+"%");
+        if (contentCategory != null){
+            if (contentCategory.getName() != null && !"".equals(contentCategory.getName())){
+                criteria.andNameLike("%"+contentCategory.getName()+"%");
             }
+
         }
         Page<ContentCategory> categoryList = (Page<ContentCategory>)categoryDao.selectByExample(query);
-        return new PageResult(categoryList.getTotal(), categoryList.getResult());
+        return new PageResult(categoryList.getTotal(),categoryList.getResult());
+
     }
 
     @Override
-    public void add(ContentCategory category) {
-        categoryDao.insertSelective(category);
+    public void add(ContentCategory contentCategory) {
+        categoryDao.insertSelective(contentCategory);
     }
 
     @Override
@@ -49,13 +52,13 @@ public class ContentCategoryServiceImpl implements ContentCategoryService {
     }
 
     @Override
-    public void update(ContentCategory category) {
-        categoryDao.updateByPrimaryKeySelective(category);
+    public void update(ContentCategory contentCategory) {
+        categoryDao.updateByPrimaryKeySelective(contentCategory);
     }
 
     @Override
     public void delete(Long[] ids) {
-        if (ids != null) {
+        if (ids != null){
             for (Long id : ids) {
                 categoryDao.deleteByPrimaryKey(id);
             }

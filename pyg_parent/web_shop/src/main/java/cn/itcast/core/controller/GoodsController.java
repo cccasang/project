@@ -27,44 +27,38 @@ public class GoodsController {
      * @return
      */
     @RequestMapping("/add")
-    public Result add(@RequestBody GoodsEntity goodsEntity) {
+    public Result add(@RequestBody GoodsEntity goodsEntity){
         try {
-            //获取当前登录用户的用户名
             String userName = SecurityContextHolder.getContext().getAuthentication().getName();
             goodsEntity.getGoods().setSellerId(userName);
             goodsService.add(goodsEntity);
-
-            return new Result(true, "添加成功!");
+            return new Result(true,"添加成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "添加失败!");
+            return new Result(false,"添加失败");
         }
+
     }
 
     /**
      * 商品分页查询
-     * @param page  当前页
-     * @param rows  每页展示多少条数据
-     * @param goods 页面传入的查询条件对象
-     */
-    @RequestMapping("/search")
-    public PageResult search(Integer page, Integer rows, @RequestBody Goods goods) {
-        //获取当前登录用户的用户名
-        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        goods.setSellerId(userName);
-        PageResult pageResult = goodsService.search(page, rows, goods);
-        return pageResult;
-    }
-
-    /**
-     * 商品修改前查询回显数据
-     * @param id
+     * @param page
+     * @param rows
+     * @param goods
      * @return
      */
+    @RequestMapping("/search")
+    public PageResult search(Integer page, Integer rows, @RequestBody Goods goods){
+        //获取当前登陆用户的用户名
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        goods.setSellerId(userName);
+        return goodsService.search(page, rows, goods);
+    }
+
     @RequestMapping("/findOne")
-    public GoodsEntity findOne(Long id) {
-        GoodsEntity one = goodsService.findOne(id);
-        return one;
+    public GoodsEntity findOne(Long id){
+        return goodsService.findOne(id);
+
     }
 
     /**
@@ -73,40 +67,41 @@ public class GoodsController {
      * @return
      */
     @RequestMapping("/update")
-    public Result update(@RequestBody GoodsEntity goodsEntity) {
-
+    public Result update(@RequestBody GoodsEntity goodsEntity){
         try {
-            //1. 获取当前登录用户的用户名
+            //1.获取当前登录用户的用户名
             String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-            //2. 判断当前商品是否为当前用户添加的商品, 如果不是不允许修改
-            if (!goodsEntity.getGoods().getSellerId().equals(userName)) {
-                return new Result(false, "您没有权限修改此商品!");
+            //2.判断当前商品是否为当前用户添加的商品,如果不是,则不允许修改
+            if (!goodsEntity.getGoods().getSellerId().equals(userName)){
+               return new Result (false,"您没有权限修改商品!");
             }
-            //3. 调用service执行修改
+            //3.调用 service 执行修改
             goodsService.update(goodsEntity);
-            return new Result(true, "修改成功!");
+            return new Result(true,"修改成功!");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "修改失败!");
-        }
+            return new Result(false,"修改失败!");
 
+        }
     }
 
     @RequestMapping("/delete")
-    public Result delte(Long[] ids) {
+    public Result delete(Long[] ids){
         try {
-            //1. 根据商品id到数据库中逻辑删除商品
+            //1.到数据库中逻辑删除商品数据
             goodsService.delete(ids);
-            //2. 根据商品id删除solr索引库中对应的数据
-//            if (ids != null) {
-//                for (Long goodsId : ids) {
-//                    solrManagerService.deleteSolrByGoodsId(goodsId);
+            //2.根据商品id,到solr索引库中删除对应的库存数据
+//            if (ids != null){
+//                for (Long id : ids) {
+//                    solrManagerService.deleteItemByGoodsId(id);
 //                }
 //            }
-            return new Result(true, "删除成功!");
+            return new Result(true,"删除成功!");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "删除失败!");
+            return new Result(false,"删除失败!");
         }
     }
+
+
 }

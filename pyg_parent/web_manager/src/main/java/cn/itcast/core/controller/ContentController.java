@@ -21,45 +21,46 @@ public class ContentController {
 
 
     @RequestMapping("/search")
-    public PageResult search(Integer page, Integer rows, @RequestBody Content content) {
+    public PageResult search(Integer page, Integer rows, @RequestBody Content content){
         return contentService.search(page, rows, content);
     }
 
     @RequestMapping("/add")
-    public Result add(@RequestBody Content content) {
+    public Result add(@RequestBody Content content){
         try {
             contentService.add(content);
-            return new Result(true, "添加成功!");
+            return new Result(true,"广告添加成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "添加失败!");
+            return new Result(false,"广告添加失败");
+
         }
     }
 
     @RequestMapping("/findOne")
-    public Content findOne(Long id) {
+    public Content findOne(Long id){
         return contentService.findOne(id);
     }
 
     @RequestMapping("/update")
-    public Result update(@RequestBody Content content) {
+    public Result update(@RequestBody Content content){
         try {
             contentService.update(content);
-            return new Result(true, "修改成功!");
+            return new Result(true,"广告更新成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "修改失败!");
+            return new Result(false,"广告更新失败");
         }
     }
 
     @RequestMapping("/delete")
-    public Result delete(Long[] ids) {
+    public Result delete(Long[] ids){
         try {
             contentService.delete(ids);
-            return new Result(true, "删除成功!");
+            return new Result(true,"广告删除成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "删除失败!");
+            return new Result(false,"广告删除失败");
         }
     }
 }

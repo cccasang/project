@@ -16,6 +16,7 @@ import java.util.Date;
 @Transactional
 public class SellerServiceImpl implements SellerService {
 
+
     @Autowired
     private SellerDao sellerDao;
 
@@ -27,38 +28,40 @@ public class SellerServiceImpl implements SellerService {
 //        String password = passwordEncoder.encode(seller.getPassword());
 //        seller.setPassword(password);
 
-
-        //刚注册, 默认卖家的状态为0, 未审核
+        //刚注册,默认卖家的状态为0,未审核
         seller.setStatus("0");
-        //创建时间
         seller.setCreateTime(new Date());
 
+
         sellerDao.insertSelective(seller);
+
     }
 
     @Override
     public PageResult findPage(Seller seller, Integer page, Integer rows) {
         SellerQuery query = new SellerQuery();
         SellerQuery.Criteria criteria = query.createCriteria();
-        if (seller != null) {
-            if (seller.getStatus() != null && !"".equals(seller.getStatus())) {
+        if (seller != null){
+            if (seller.getStatus()!=null && !"".equals(seller.getStatus())){
                 criteria.andStatusEqualTo(seller.getStatus());
             }
-            if (seller.getName() != null && !"".equals(seller.getName())) {
+            if (seller.getName()!= null  && !"".equals(seller.getName())){
                 criteria.andNameLike("%"+seller.getName()+"%");
             }
-            if (seller.getNickName() != null && !"".equals(seller.getNickName())) {
+            if (seller.getNickName()!= null  && !"".equals(seller.getNickName())){
                 criteria.andNickNameLike("%"+seller.getNickName()+"%");
+
             }
         }
-        PageHelper.startPage(page, rows);
-        Page<Seller> sellerList = (Page<Seller>)sellerDao.selectByExample(query);
-        return new PageResult(sellerList.getTotal(), sellerList.getResult());
+        PageHelper.startPage(page,rows);
+        Page<Seller> sellerList = (Page<Seller>) sellerDao.selectByExample(query);
+        return new PageResult(sellerList.getTotal(),sellerList.getResult());
     }
 
     @Override
     public Seller findOne(String id) {
-        return sellerDao.selectByPrimaryKey(id);
+        Seller seller = sellerDao.selectByPrimaryKey(id);
+        return seller;
     }
 
     @Override

@@ -2,7 +2,6 @@ package cn.itcast.core.service;
 
 import cn.itcast.core.dao.user.UserDao;
 import cn.itcast.core.pojo.user.User;
-import com.alibaba.dubbo.config.annotation.Service;
 import com.alibaba.fastjson.JSON;
 import org.apache.activemq.command.ActiveMQMapMessage;
 import org.apache.activemq.command.ActiveMQQueue;
@@ -20,8 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService{
 
     @Autowired
     private RedisTemplate redisTemplate;
@@ -34,32 +32,31 @@ public class UserServiceImpl implements UserService {
 
     @Value("${sign_name}")
     private String signName;
+
     @Value("${template_code}")
     private String templateCode;
 
     @Autowired
     private UserDao userDao;
 
+
     @Override
     public void sendCode(final String phone) {
-        //1. 生成一个小于等于6位的随机数作为验证码
-        final long code = (long)(Math.random() * 1000000);
-        //2. 将手机号作为key, 验证码作为value存入redis
-        redisTemplate.boundValueOps(phone).set(code, 10, TimeUnit.MINUTES);
-        //3. 将手机号, 验证码, 模板编号, 签名等数据封装成map格式的消息发送给消息服务器
+        //生成一个小于等于六位的随机数作为验证码
+        final long code = (long) (Math.random()*1000000);
+        //将手机号作为key,验证码作为value 存入redis
+        redisTemplate.boundValueOps(phone).set(code,10 , TimeUnit.MINUTES);
+        //将手机号验证码,模板编号,签名等数据 封装成map格式,发送给消息服务器
         jmsTemplate.send(smsDestination, new MessageCreator() {
             @Override
             public Message createMessage(Session session) throws JMSException {
-                MapMessage mapMessage = new ActiveMQMapMessage();
-                //手机号
-                mapMessage.setString("phone", phone);
-                //验证码
-                mapMessage.setString("signName", signName);
-                //模板编号
-                mapMessage.setString("templateCode", templateCode);
+                MapMessage mapMessage =new ActiveMQMapMessage();
+                mapMessage.setString("phone", phone);//手机号
+                mapMessage.setString("signName", signName);//验证码
+                mapMessage.setString("templateCode", templateCode);//模板编号
 
                 //短信内容
-                Map<String, String> codeMap = new HashMap<>();
+                Map<String,String> codeMap =new HashMap<>();
                 codeMap.put("code", String.valueOf(code));
                 mapMessage.setString("param", JSON.toJSONString(codeMap));
                 return mapMessage;
@@ -89,10 +86,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public void add(User user) {
         userDao.insertSelective(user);
-    }
-
-    public static void main(String[] args) {
-        long s = (long)(Math.random() * 1000000);
-        System.out.println("======" + s);
-    }
+        }
 }

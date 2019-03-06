@@ -8,9 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
-/**
- * 搜索业务
- */
 @RestController
 @RequestMapping("/itemsearch")
 public class ItemSearchController {
@@ -18,9 +15,11 @@ public class ItemSearchController {
     @Reference
     private SearchService searchService;
 
+
     @RequestMapping("/search")
-    public Map<String, Object> search(@RequestBody Map paramMap) {
+    public Map<String,Object> search(@RequestBody Map paramMap){
         Map<String, Object> resultMap = searchService.search(paramMap);
         return resultMap;
     }
+
 }

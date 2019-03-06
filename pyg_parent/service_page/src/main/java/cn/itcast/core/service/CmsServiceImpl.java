@@ -26,88 +26,86 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class CmsServiceImpl implements CmsService , ServletContextAware{
+public class CmsServiceImpl implements CmsService,ServletContextAware {
 
     @Autowired
     private GoodsDao goodsDao;
 
     @Autowired
-    private GoodsDescDao descDao;
+    private GoodsDescDao goodsDescDao;
 
     @Autowired
     private ItemDao itemDao;
 
     @Autowired
-    private ItemCatDao catDao;
+    private ItemCatDao itemCatDao;
 
     @Autowired
     private FreeMarkerConfigurer freeMarkerConfigurer;
-
 
     private ServletContext servletContext;
 
     @Override
     public void createStaticPage(Long goodsId, Map<String, Object> rootMap) throws Exception{
-        //1. 获取freemarker初始化对象
+        //1.获取freemarker初始化对象
         Configuration configuration = freeMarkerConfigurer.getConfiguration();
-        //2. 通过初始化对象获取模板对象, 并且指定模板的名称
+        //2.通过初始化对象获取模板对象,并且指定模板的名称
         Template template = configuration.getTemplate("item.ftl");
-        //3. 定义静态页面的名称   页面名称 = 商品id + .html
-        String path = goodsId + ".html";
-        //4. 通过页面相对路径转化成绝对路径(保存生成后的页面的位置),
-        // 例如: goodsId.html 转换为D:\intellijWorkSpace2\pyg_parent\service_page\target\service_page\goodsId.html
+        //3.定义静态页面的名称=商品id + .html
+        String path = goodsId+".html";
+        //4.通过页面相对路径转换成绝对路径
         String url = getRealPath(path);
-        //5. 定义输出流
-        Writer out = new OutputStreamWriter(new FileOutputStream(new File(url)), "utf-8");
-        //6. 生成静态化页面
-        template.process(rootMap, out);
-        //7. 关闭流
+        //5.定义输出流
+        Writer out  =  new OutputStreamWriter(new FileOutputStream(new File(url)),"utf-8");
+        //6.生成静态化页面
+        template.process(rootMap,out);
+        //7.关闭流
         out.close();
     }
 
     @Override
     public Map<String, Object> findGoods(Long goodsId) {
-        Map<String, Object> rootMap = new HashMap<>();
-        //1. 根据商品id获取商品对象
+        Map<String,Object> rootMap = new HashMap<>();
+        //1.根据商品id获取商品对象
         Goods goods = goodsDao.selectByPrimaryKey(goodsId);
-        //2. 根据商品id获取商品详情对象
-        GoodsDesc goodsDesc = descDao.selectByPrimaryKey(goodsId);
-        //3. 根据商品id获取库存集合对象
+        //2.根据商品id获取商品详情对象
+        GoodsDesc goodsDesc = goodsDescDao.selectByPrimaryKey(goodsId);
+        //3.根据商品id获取库存集合对象
         ItemQuery query = new ItemQuery();
         ItemQuery.Criteria criteria = query.createCriteria();
         criteria.andGoodsIdEqualTo(goodsId);
-        List<Item> items = itemDao.selectByExample(query);
-        //4. 根据商品对象的分类id, 获取分类名称
-        if (goods != null) {
-            ItemCat itemCat1 = catDao.selectByPrimaryKey(goods.getCategory1Id());
-            ItemCat itemCat2 = catDao.selectByPrimaryKey(goods.getCategory2Id());
-            ItemCat itemCat3 = catDao.selectByPrimaryKey(goods.getCategory3Id());
-            rootMap.put("itemCat1", itemCat1.getName());
-            rootMap.put("itemCat2", itemCat2.getName());
-            rootMap.put("itemCat3", itemCat3.getName());
+        List<Item> itemList = itemDao.selectByExample(query);
+        //4.根据商品对象的分类id,获取分类名称
+        if (goods != null){
+            ItemCat itemCat1 = itemCatDao.selectByPrimaryKey(goods.getCategory1Id());
+            ItemCat itemCat2 = itemCatDao.selectByPrimaryKey(goods.getCategory2Id());
+            ItemCat itemCat3 = itemCatDao.selectByPrimaryKey(goods.getCategory3Id());
+            rootMap.put("itemCat1",itemCat1.getName());
+            rootMap.put("itemCat2",itemCat2.getName());
+            rootMap.put("itemCat3",itemCat3.getName());
         }
-
-        //5. 将以上获取的对象封装到Map中返回
-        rootMap.put("goods", goods);
-        rootMap.put("goodsDesc", goodsDesc);
-        rootMap.put("itemList", items);
+        rootMap.put("goods",goods);
+        rootMap.put("goodsDesc",goodsDesc);
+        rootMap.put("itemList",itemList);
+        //5.将以上获取的对象封装到map中返回
         return rootMap;
     }
 
     /**
-     * 相对路径转换成绝对路径
+     * 通过页面相对路径转换成绝对路径
      * @param path  相对路径
      * @return
      */
-    private String  getRealPath(String path) {
+    private String  getRealPath(String path){
         String realPath = servletContext.getRealPath(path);
         return realPath;
     }
 
+
     /**
-     * spring实例化了ServletContextAware接口, 并且实例化了里面的ServletContext对象
-     * 所以这个类实现ServletContextAware接口目的是为了获取里面实例化过的ServletContext对象, 拿到这个对象后
-     * 给当前类的全局变量ServletContext赋值, 也就相当于给本类中的全局变量ServletContext对象初始化
+     * 实例化了里面的servletContextAware接口,并且实例化了里面的servletContext对象
+     * 所以这个类实现servletContextAware接口目的是为了获取里面实例化过的servletContext对象,
+     * 拿到这个对象后,给当前类的全局变量赋值,也就相当于给本类中的全局变量servletContext对象初始化
      * @param servletContext
      */
     @Override

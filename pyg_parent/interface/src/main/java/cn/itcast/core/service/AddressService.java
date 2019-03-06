@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface AddressService {
 
-    public List<Address> findAddressListByUserName(String userName);
+    public List<Address> findAddressByUserName(String userName);
 }

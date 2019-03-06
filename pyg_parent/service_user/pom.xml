@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.itcast</groupId>
     <artifactId>service_user</artifactId>
     <packaging>war</packaging>
 

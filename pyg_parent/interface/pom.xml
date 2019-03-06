@@ -9,9 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.itcast</groupId>
     <artifactId>interface</artifactId>
-
 
     <dependencies>
         <dependency>
@@ -20,4 +18,6 @@
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
+
+
 </project>

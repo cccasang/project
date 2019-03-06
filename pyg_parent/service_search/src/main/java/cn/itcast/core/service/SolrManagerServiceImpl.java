@@ -23,42 +23,42 @@ public class SolrManagerServiceImpl implements SolrManagerService {
     @Autowired
     private ItemDao itemDao;
 
-
     @Override
     public void importItemToSolr(Long goodsId) {
-        //1. 查询库存表所有已审核通过的数据
+        //1.查询库存表所有已通过审核的库存数据
         ItemQuery query = new ItemQuery();
         ItemQuery.Criteria criteria = query.createCriteria();
-        //审核通过的
+        //查询状态为已审核的
         criteria.andStatusEqualTo("1");
-        //根据商品id查询
+        //查询商品id为指定商品的库存数据
         criteria.andGoodsIdEqualTo(goodsId);
         List<Item> itemList = itemDao.selectByExample(query);
-        //遍历库存集合
-        if (itemList != null) {
+        //解析库存集合
+        if (itemList != null){
             for (Item item : itemList) {
                 //获取规格json字符串
                 String specJsonStr = item.getSpec();
                 //规格json字符串解析成map对象
-                Map<String, String> map = JSON.parseObject(specJsonStr, Map.class);
+                Map<String,String> map = JSON.parseObject(specJsonStr, Map.class);
                 item.setSpecMap(map);
+
+
             }
         }
-        //2. 将库存集合数据存入solr索引库
+        //2.将库存集合数据存入索引库
         solrTemplate.saveBeans(itemList);
-        //3. 提交
+        //3.提交
         solrTemplate.commit();
     }
 
     @Override
-    public void deleteSolrByGoodsId(Long goodsId) {
+    public void deleteItemByGoodsId(Long goodsId) {
         //创建查询对象
         Query query = new SimpleQuery();
-        //创建条件对象
+        //创建条件查询对象
         Criteria criteria = new Criteria("item_goodsid").is(goodsId);
-        //将条件对象加入到查询对象中
         query.addCriteria(criteria);
-        //根据查询对象删除
+        //根据查询条件删除,这里的删除对象是根据商品id删除
         solrTemplate.delete(query);
         //提交
         solrTemplate.commit();

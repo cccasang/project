@@ -8,7 +8,6 @@
     <artifactId>pyg_parent</artifactId>
     <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
-
     <!-- 集中定义依赖版本号 -->
     <properties>
         <junit.version>4.12</junit.version>
@@ -30,23 +29,23 @@
         <solrj.version>4.10.3</solrj.version>
         <ik.version>2012_u6</ik.version>
     </properties>
-
     <modules>
-        <module>common</module>
-        <module>pojo</module>
-        <module>dao</module>
-        <module>interface</module>
-        <module>solr_util</module>
         <module>service_sellergoods</module>
         <module>service_buyer</module>
-        <module>service_search</module>
         <module>service_page</module>
+        <module>service_search</module>
         <module>service_user</module>
         <module>web_manager</module>
         <module>web_shop</module>
         <module>web_portal</module>
         <module>web_user</module>
+        <module>common</module>
+        <module>pojo</module>
+        <module>interface</module>
+        <module>solr_util</module>
+        <module>dao</module>
     </modules>
+
 
     <dependencyManagement>
         <dependencies>
@@ -271,5 +270,6 @@
         </dependencies>
 
     </dependencyManagement>
+
 
 </project>

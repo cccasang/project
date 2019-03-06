@@ -6,15 +6,11 @@ import cn.itcast.core.pojo.specification.SpecificationOption;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 自定义封装规格实体类, 里面包含规格对象, 规格选项集合对象
- */
-public class SpecEntity implements Serializable {
-    //规格对象
-    private Specification specification;
-    //规格选项集合对象
-    private List<SpecificationOption> specificationOptionList;
+public class Spec implements Serializable {
 
+    private Specification specification;
+
+    private List<SpecificationOption> specificationOptionList;
 
     public Specification getSpecification() {
         return specification;
@@ -31,4 +27,6 @@ public class SpecEntity implements Serializable {
     public void setSpecificationOptionList(List<SpecificationOption> specificationOptionList) {
         this.specificationOptionList = specificationOptionList;
     }
+
+
 }

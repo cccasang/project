@@ -9,7 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>cn.itcast</groupId>
     <artifactId>common</artifactId>
 
 
@@ -186,5 +185,7 @@
             <version>1.5.5.RELEASE</version>
         </dependency>
     </dependencies>
+
+
 
 </project>

@@ -18,24 +18,25 @@ public class OrderController {
 
     @Reference
     private OrderService orderService;
-
     /**
      * 保存订单
      * @param order
      * @return
      */
     @RequestMapping("/add")
-    public Result add(@RequestBody Order order) {
+    public Result add(@RequestBody Order order){
+        //1.获取当前登录用户的用户名
+        String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+        order.setUserId(userName);
+        //2.根据用户名和页面传入的订单对象,保存订单
         try {
-            //1. 获取当前登录用户的用户名
-            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-            order.setUserId(userName);
-            //2. 根据用户名和页面传入的订单对象, 保存订单
             orderService.add(order);
-            return new Result(true, "订单保存成功!");
+            return new Result(true,"订单保存成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "订单保存失败!");
+            return new Result(false,"订单保存失败");
+
         }
+
     }
 }

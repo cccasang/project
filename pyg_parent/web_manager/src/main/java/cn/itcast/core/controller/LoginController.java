@@ -12,12 +12,11 @@ import java.util.Map;
 public class LoginController {
 
     @RequestMapping("/showName")
-    public Map<String, String> showName() {
+    public Map<String,String> showName(){
         //获取springSecurity中当前登录用户的用户名
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
-
         Map<String, String> map = new HashMap<>();
-        map.put("username", name);
+        map.put("username",name);
         return map;
     }
 }

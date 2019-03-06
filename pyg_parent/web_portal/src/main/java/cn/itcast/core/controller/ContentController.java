@@ -16,8 +16,10 @@ public class ContentController {
     private ContentService contentService;
 
     @RequestMapping("/findByCategoryId")
-    public List<Content> findByCategoryId(Long categoryId) {
-        //return contentService.findByCategoryId(categoryId);
+    public List<Content> findByCategoryId(Long categoryId){
+       // return contentService.findByCategoryId(categoryId);
         return contentService.findByCategoryIdFromRedis(categoryId);
     }
+
+
 }

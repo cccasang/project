@@ -9,7 +9,7 @@ app.service("brandService",function($http){
 	}
 	
 	this.save = function(entity){
-		return $http.post("../brand/add.do",entity);
+		return $http.post("../brand/save.do",entity);
 	}
 	
 	this.update=function(entity){
@@ -17,7 +17,7 @@ app.service("brandService",function($http){
 	}
 	
 	this.findById=function(id){
-		return $http.get("../brand/findOne.do?id="+id);
+		return $http.get("../brand/findById.do?id="+id);
 	}
 	
 	this.dele = function(ids){

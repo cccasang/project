@@ -134,7 +134,7 @@ app.controller('goodsController' ,function($scope,$controller,$location,typeTemp
 		$scope.entity.goodsDesc.itemImages.push($scope.image_entity);
 	}
 	
-	$scope.remove_iamge_entity = function(index){
+	$scope.remove_image_entity = function(index){
 		$scope.entity.goodsDesc.itemImages.splice(index,1);
 	}
 	
@@ -248,12 +248,7 @@ app.controller('goodsController' ,function($scope,$controller,$location,typeTemp
 	// 显示分类:
 	$scope.findItemCatList = function(){
 		itemCatService.findAll().success(function(response){
-			//后端返回的数据个是List<ItemCat> [{id:1, name:图书、音像、电子书刊, parentId:0},{id:2, name:电子书刊, parentId:1}]
 			for(var i=0;i<response.length;i++){
-				//response[i] 因为i是数组的索引号, response[i]其实就是获取的分类表中的一条, 一条数据{id:1, name:图书、音像、电子书刊, parentId:0}
-				//response[i].id 就是取分类的某一条数据的id属性
-				//response[i].name就是取分类的某一条数据的name属性
-				//$scope.itemCatList[分类id] = 分类名称
 				$scope.itemCatList[response[i].id] = response[i].name;
 			}
 		});

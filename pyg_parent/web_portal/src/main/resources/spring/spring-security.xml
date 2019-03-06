@@ -3,26 +3,23 @@
 	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
-
-    <!-- 放行的静态资源 -->
+	
 	<http pattern="/css/**" security="none"></http>
 	<http pattern="/img/**" security="none"></http>
 	<http pattern="/js/**" security="none"></http>
 	<http pattern="/plugins/**" security="none"></http>
-
-    <!-- 放行的页面 -->
+	
 	<http pattern="/index.html" security="none"></http>
 	<http pattern="/search.html" security="none"></http>
 	<http pattern="/cart.html" security="none"></http>
-<!-- 	<http pattern="/cart.html" security="none"></http> -->
+	<http pattern="/content/findByCategoryId.do" security="none"></http>
+ 	<!--<http pattern="/cart.html" security="none"></http> -->
     	
 	<!--   entry-point-ref  入口点引用 -->
 	<http use-expressions="false" entry-point-ref="casProcessingFilterEntryPoint"> 
-		<!-- 匿名角色 IS_AUTHENTICATED_ANONYMOUSLY , 如果没有权限也可以访问的请求-->
+		<!-- 匿名角色 IS_AUTHENTICATED_ANONYMOUSLY -->
 		<intercept-url pattern="/cart/*.do" access="IS_AUTHENTICATED_ANONYMOUSLY"></intercept-url> 
-		<intercept-url pattern="/itemsearch/*.do" access="IS_AUTHENTICATED_ANONYMOUSLY"></intercept-url>
-
-        <!-- 除了放行的资源和请求, 其他请求全部拦截, 只有拥有了ROLE_USER权限才放行 -->
+		<intercept-url pattern="/itemsearch/*.do" access="IS_AUTHENTICATED_ANONYMOUSLY"></intercept-url> 
         <intercept-url pattern="/**" access="ROLE_USER"/>   
         <csrf disabled="true"/>  
         <!-- custom-filter为过滤器， position 表示将过滤器放在指定的位置上，before表示放在指定位置之前  ，after表示放在指定的位置之后  -->           
@@ -39,7 +36,7 @@
     </beans:bean>      
     <beans:bean id="serviceProperties" class="org.springframework.security.cas.ServiceProperties">  
         <!--service 配置自身工程的根地址+/login/cas   -->  
-        <beans:property name="service" value="http://localhost:8080/login/cas"/>
+        <beans:property name="service" value="http://localhost:9090/login/cas"/>
     </beans:bean>  
     <!-- CAS入口点 结束 -->
 
@@ -70,7 +67,7 @@
         <beans:property name="key" value="an_id_for_this_auth_provider_only"/> 
     </beans:bean>        
    		 <!-- 认证类 -->
-	<beans:bean id="userDetailsService" class="cn.itcast.core.serivce.UserDetailServiceImpl"/>
+	<beans:bean id="userDetailsService" class="cn.itcast.core.service.UserDetailServiceImpl"/>  
 	
 	<!-- 认证过滤器 结束 -->
 	
@@ -79,7 +76,7 @@
     <beans:bean id="singleLogoutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter"/>    
     <!-- 经过此配置，当用户在地址栏输入本地工程 /logout/cas  -->      
     <beans:bean id="requestSingleLogoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">  
-        <beans:constructor-arg value="http://192.168.200.128:9100/cas/logout?service=http://localhost:8080"/>  
+        <beans:constructor-arg value="http://192.168.200.128:9100/cas/logout?service=http://localhost:9090"/>
         <beans:constructor-arg>  
             <beans:bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>  
         </beans:constructor-arg>  

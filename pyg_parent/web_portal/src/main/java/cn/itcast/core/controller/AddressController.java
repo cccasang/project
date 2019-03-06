@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * 收货人地址管理
- */
 @RestController
 @RequestMapping("/address")
 public class AddressController {
@@ -20,11 +17,11 @@ public class AddressController {
     private AddressService addressService;
 
     @RequestMapping("/findListByLoginUser")
-    public List<Address> findListByLoginUser() {
-        //1. 获取当前登录用户的用户名
+    public List<Address> findListByLoginUser(){
+        //1.获取当前登录用户的用户名
         String userName = SecurityContextHolder.getContext().getAuthentication().getName();
-        //2. 根据用户名获取这个人的收货地址列表
-        List<Address> addressList = addressService.findAddressListByUserName(userName);
+        //2.根据用户名获取这个人的收货地址列表
+        List<Address> addressList = addressService.findAddressByUserName(userName);
         return addressList;
     }
 }

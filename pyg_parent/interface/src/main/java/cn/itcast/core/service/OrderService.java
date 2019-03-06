@@ -6,5 +6,5 @@ public interface OrderService {
 
     public void add(Order order);
 
-    public  void updatePayLogAndOrderStatus(String out_trade_no);
+    public void updatePayLogAndOrderStatus(String out_trade_no);
 }

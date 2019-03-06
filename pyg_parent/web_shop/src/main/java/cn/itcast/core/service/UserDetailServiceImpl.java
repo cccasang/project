@@ -11,13 +11,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 自定义实现类
- * 根据springSecurity传入的用户名到数据库获取对应的用户对象
- * 如果能够获取, 那么返回springSecurity要求的User对象
- */
+//自定义权限管理实现类
+//根据用户名到数据库中的seller表中获取用户详细信息
+//返回springSecurity规定的User对象,给SpringSecurity用户名和密码 ,还有如果登录成功应该具有的访问权限集合
 public class UserDetailServiceImpl implements UserDetailsService {
-
 
     private SellerService sellerService;
 
@@ -27,21 +24,22 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         //创建权限集合
-        List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
-        //向权限集合中添加权限
+        List<GrantedAuthority> authList = new ArrayList<>();
+        //给权限集合加入对应的访问权限
         authList.add(new SimpleGrantedAuthority("ROLE_SELLER"));
 
-        //1. 根据用户名到卖家表查询卖家对象
         Seller seller = sellerService.findOne(username);
-        //2. 如果卖家对象不为空
-        if (seller != null) {
-            //3. 判断卖家是否审核已经通过
-            if ("1".equals(seller.getStatus())) {
-                //4. 如果卖家审核已经通过, 那么返回SpringSecurity的用户对象
-                return new User(username, seller.getPassword(), authList);
+
+        if (seller != null){
+            if ("1".equals(seller.getStatus())){
+                return new User(username,seller.getPassword(),authList);
             }
         }
+
         return null;
     }
+
+
 }

@@ -88,7 +88,7 @@
 				                          <td>{{entity.id}}</td>
 									      <td>{{entity.name}}</td>
 									      <td>{{jsonToString(entity.brandIds,'text')}}</td>
-									      <td>{{jsonToString(entity.specIds,'text')}}</td>
+									      <td>{{jsonToString(entity.specIds,'text')}}</td>									 
 									      <td>{{jsonToString(entity.customAttributeItems,'text')}}</td>		                                                                  
 		                                  <td class="text-center">                                           
 		                                 	  <button type="button" class="btn bg-olive btn-xs" ng-click="findOne(entity.id)" data-toggle="modal" data-target="#editModal" >修改</button>                                           
@@ -133,9 +133,7 @@
 		      			<!-- 
 		      				ng-model:绑定下拉列表的id
 		      				select2-model:绑定下拉列表的id和value
-		      				config:代表的是数据的来源, 也就是数据集合, 但是这个数据集合格式有一定的要求
-		      				multiple表示是否多选, 有multiple可以多选, 没有则只能单选
-		      				placeholder默认的提示文字, 当鼠标选中的时候, 提示文字消失
+		      				config:代表的是数据的来源
 		      			 -->
 		      			<input select2 select2-model="entity.brandIds" config="brandList" multiple placeholder="支持多选哦" class="form-control" type="text"/>
 		      		</td>

@@ -9,7 +9,7 @@ app.controller("contentController",function($scope,contentService){
 	
 	//搜索,跳转到portal系统查询列表页面(传递参数）
 	$scope.search=function(){
-		location.href="http://localhost:8080/search.html#?keywords="+$scope.keywords;
+		location.href="http://localhost:9090/search.html#?keywords="+$scope.keywords;
 	}
 	
 });

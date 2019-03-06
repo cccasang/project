@@ -17,17 +17,20 @@ public class SellerController {
 
     /**
      * 商家注册
-     * @param seller    商家实体
+     * @param seller  商家实体
      * @return
      */
-    @RequestMapping("/add")
-    public Result add(@RequestBody Seller seller) {
+
+    public Result add(@RequestBody Seller seller){
         try {
             sellerService.add(seller);
-            return new Result(true, "注册成功!");
+            return new Result(true,"注册成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "注册失败!");
+            return new Result(false,"注册失败");
+
         }
+
     }
+
 }

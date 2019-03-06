@@ -16,56 +16,59 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/contentCategory")
-public class ContentCategoryController {
+public class ContentCategoryController  {
 
     @Reference
     private ContentCategoryService categoryService;
 
     @RequestMapping("/findAll")
-    public List<ContentCategory> findAll() {
-        return categoryService.findAll();
+    public List<ContentCategory> findAll(){
+       return categoryService.findAll();
+
     }
 
     @RequestMapping("/search")
-    public PageResult search(Integer page, Integer rows, @RequestBody ContentCategory category) {
-        return categoryService.search(page, rows, category);
+    public PageResult search(Integer page, Integer rows, @RequestBody ContentCategory contentCategory){
+        return categoryService.search(page, rows, contentCategory);
     }
 
     @RequestMapping("/add")
-    public Result add(@RequestBody ContentCategory category) {
+    public Result add(@RequestBody ContentCategory contentCategory){
         try {
-            categoryService.add(category);
-            return new Result(true, "添加成功!");
+            categoryService.add(contentCategory);
+            return new Result(true,"广告添加成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "添加失败!");
+            return new Result(false,"广告添加失败");
+
         }
     }
 
     @RequestMapping("/findOne")
-    public ContentCategory findOne(Long id) {
+    public ContentCategory findOne(Long id){
         return categoryService.findOne(id);
     }
 
     @RequestMapping("/update")
-    public Result update(@RequestBody ContentCategory category) {
+    public Result update(@RequestBody ContentCategory contentCategory){
         try {
-            categoryService.update(category);
-            return new Result(true, "修改成功!");
+            categoryService.update(contentCategory);
+            return new Result(true,"广告更新成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "修改失败!");
+            return new Result(false,"广告更新失败");
         }
     }
 
     @RequestMapping("/delete")
-    public Result delete(Long[] ids) {
+    public Result delete(Long[] ids){
         try {
             categoryService.delete(ids);
-            return new Result(true, "删除成功!");
+            return new Result(true,"广告删除成功");
         } catch (Exception e) {
             e.printStackTrace();
-            return new Result(false, "删除失败!");
+            return new Result(false,"广告删除失败");
         }
     }
+
 }

@@ -32,8 +32,6 @@ app.controller("baseController",function($scope){
 	}
 	
 	// 定义方法：获取JSON字符串中的某个key对应值的集合
-	//jsonStr需要转换的json字符串,
-	//key需要获取的json中的哪个key的值
 	$scope.jsonToString = function(jsonStr,key){
 		// 将字符串转成JSOn:
 		var jsonObj = JSON.parse(jsonStr);
@@ -44,8 +42,7 @@ app.controller("baseController",function($scope){
 			if(i>0){
 				value += ",";
 			}
-			//jsonObj[i]的值例如:{"id":1,"text":"联想"},
-			//jsonObj[i][key]由于key传入的值是text所以就可以转换成jsonObj[i]['text'], 获取出来就是  "联想"
+			
 			value += jsonObj[i][key];
 		}
 		return value;

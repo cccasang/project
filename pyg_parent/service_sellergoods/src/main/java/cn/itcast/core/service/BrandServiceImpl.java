@@ -18,74 +18,69 @@ public class BrandServiceImpl implements BrandService {
     @Autowired
     private BrandDao brandDao;
 
+    //查询所有数据
     @Override
     public List<Brand> findAll() {
         return brandDao.selectByExample(null);
     }
 
+
+    //分页显示数据
     @Override
-    public PageResult findPage(Brand brand, Integer page, Integer rows) {
+    public PageResult findPage(Brand brand,Integer page, Integer rows) {
         //创建查询对象
         BrandQuery query = new BrandQuery();
-        if (brand != null) {
-            //创建sql语句中的where查询条件对象
+        if (brand != null){
             BrandQuery.Criteria criteria = query.createCriteria();
-            if (brand.getName() != null && !"".equals(brand.getName())) {
+            if (brand.getName() != null && !"".equals(brand.getName())){
                 criteria.andNameLike("%"+brand.getName()+"%");
             }
-            if (brand.getFirstChar() != null && !"".equals(brand.getFirstChar())) {
+            if (brand.getFirstChar() != null && !"".equals(brand.getFirstChar())){
                 criteria.andFirstCharEqualTo(brand.getFirstChar());
             }
         }
-        PageHelper.startPage(page, rows);
-        Page<Brand> brandList = (Page<Brand>)brandDao.selectByExample(query);
-        return new PageResult(brandList.getTotal(), brandList.getResult());
+
+        //使用pageHelper进行分页
+        PageHelper.startPage(page,rows);
+        //通过dao层查询数据库查到所有数据,并强转为page集合
+        Page<Brand> brandPageList =(Page<Brand>)brandDao.selectByExample(query);
+        //返回pageResult
+        return new PageResult(brandPageList.getTotal(),brandPageList.getResult());
     }
 
+    //添加数据
     @Override
     public void add(Brand brand) {
-        //直接添加, 不管brand品牌对象中的属性值为什么, 都进行添加
-        //brandDao.insert(brand);
-        //添加前先判断brand对象中的属性是否为null, 如果为null不参与拼接sql语句不参与添加
+        //直接添加
+//        brandDao.insert(brand);
+        //先判断属性是否为null
         brandDao.insertSelective(brand);
     }
 
+    //查询修改的回显数据
     @Override
     public Brand findOne(Long id) {
         return brandDao.selectByPrimaryKey(id);
     }
 
-    /**
-     * update tb_brand set name=xxx, firstchar=xxx where name like 'xxx'
-     * @param brand
-     */
+    //修改数据
     @Override
     public void update(Brand brand) {
-        //根据主键进行更新, 并且会判断传入的brand品牌对象中的参数是否为null, 如果为null不参与更新, 如果不为null进行更新
-        brandDao.updateByPrimaryKeySelective(brand);
-        //根据主键进行更新
-        //brandDao.updateByPrimaryKey(brand);
-        //根据查询条件对象进行更新. 条件是只非主键条件
-        //brandDao.updateByExample(, );
-        //根据查询条件对象进行更新. 条件是只非主键条件, 这里对于传入的更新对象brand中的各种属性进行判断, 如果有为null值的不参与更新
-        //brandDao.updateByExampleSelective(, );
+       brandDao.updateByPrimaryKeySelective(brand);
     }
 
+    //批量删除
     @Override
     public void delete(Long[] ids) {
-        if (ids != null) {
+        if (ids != null){
             for (Long id : ids) {
-                //根据主键删除
                 brandDao.deleteByPrimaryKey(id);
-                //根据查询条件对象删除, 这个条件是非主键条件
-                //brandDao.deleteByExample();
             }
         }
     }
 
     @Override
     public List<Map> selectOptionList() {
-        List<Map> list = brandDao.selectOptionList();
-        return list;
+        return brandDao.selectOptionList();
     }
 }

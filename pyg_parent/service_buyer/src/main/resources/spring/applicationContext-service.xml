@@ -10,13 +10,11 @@
     
 	<dubbo:application name="buyer-service"/>  
     <dubbo:registry address="zookeeper://192.168.200.128:2181"/>
-    <dubbo:annotation package="cn.itcast.core.service" />
+    <dubbo:annotation package="cn.itcast.core.service" />  
 
-	<!-- 雪花算法,  分布式id生成器 -->
+	<!--雪花算法,分布式id生成器-->
    <bean id="idWorker" class="cn.itcast.core.common.IdWorker">
-	   <!-- 配置机器号, 集群情况, 不允许重复-->
     	<constructor-arg index="0" value="1"></constructor-arg>
-	   <!-- 生成12位的随机数的序列号种子 -->
     	<constructor-arg index="1" value="0"></constructor-arg>
     </bean>
    

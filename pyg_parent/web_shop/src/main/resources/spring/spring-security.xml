@@ -8,8 +8,7 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 						http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd
 						http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
-
-	<!-- 放行的资源 -->
+	
 	<http pattern="/*.html" security="none"/>
 	<http pattern="/css/**" security="none"/>
 	<http pattern="/img/**" security="none"/>
@@ -26,8 +25,7 @@
 		-->
 		<intercept-url pattern="/**" access="ROLE_SELLER"/>
 
-		
-		<!-- 
+		<!--
 		开启表单验证 
 			username-parameter="username" 
 			password-parameter="password" 
@@ -60,15 +58,13 @@
 
 	<!-- 引用dubbo 服务 -->	
 	<dubbo:application name="pinyougou-shop-web" />
-	<!--连接zookeeper-->
 	<dubbo:registry address="zookeeper://192.168.200.128:2181"/>
-	<!--配置需要引入或者是注入进来的接口-->
 	<dubbo:reference id="sellerService"  interface="cn.itcast.core.service.SellerService" >
 	</dubbo:reference>
 	
 	<!-- 配置自定义的认证类 -->
-	<beans:bean id="userDetailService" class="cn.itcast.core.service.UserDetailServiceImpl">
-		<beans:property name="sellerService" ref="sellerService"></beans:property>
+	<beans:bean id="userDetailService" class="cn.itcast.core.service.UserDetailServiceImpl ">
+		<beans:property name="SellerService" ref="sellerService"></beans:property>
 	</beans:bean>
 
 

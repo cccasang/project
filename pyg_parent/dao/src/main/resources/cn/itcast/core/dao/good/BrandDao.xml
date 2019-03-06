@@ -185,6 +185,6 @@
   </update>
 
   <select id="selectOptionList" resultType="java.util.Map">
-    select id, name text from tb_brand
+    select id,name as text from tb_brand
   </select>
 </mapper>

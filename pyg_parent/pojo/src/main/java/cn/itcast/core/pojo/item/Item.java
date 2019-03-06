@@ -97,6 +97,8 @@ public class Item implements Serializable {
     @Field("item_seller")
     private String seller;
 
+    private static final long serialVersionUID = 1L;
+
     @Dynamic
     @Field("item_spec_*")
     private Map<String,String> specMap;
@@ -108,9 +110,6 @@ public class Item implements Serializable {
     public void setSpecMap(Map<String, String> specMap) {
         this.specMap = specMap;
     }
-
-
-    private static final long serialVersionUID = 1L;
 
     public Long getId() {
         return id;

@@ -7,11 +7,10 @@ import cn.itcast.core.pojo.item.Item;
 import java.io.Serializable;
 import java.util.List;
 
-/**
- * 自定义封装商品实体类
+/*
+    自定义封装商品实体类
  */
-public class GoodsEntity implements Serializable{
-
+public class GoodsEntity implements Serializable {
     //商品对象
     private Goods goods;
     //商品详情对象

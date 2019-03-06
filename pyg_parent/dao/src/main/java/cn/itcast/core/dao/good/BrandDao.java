@@ -30,5 +30,5 @@ public interface BrandDao {
 
     int updateByPrimaryKey(Brand record);
 
-    public List<Map> selectOptionList();
+    List<Map> selectOptionList();
 }
