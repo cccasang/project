@@ -15,6 +15,16 @@ public class Brand implements Serializable {
      */
     private String firstChar;
 
+    private Integer stat;
+
+    public Integer getStat() {
+        return stat;
+    }
+
+    public void setStat(Integer stat) {
+        this.stat = stat;
+    }
+
     private static final long serialVersionUID = 1L;
 
     public Long getId() {
