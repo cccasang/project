@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>订单管理</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" name="viewport">
+    <link rel="stylesheet" href="../plugins/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/AdminLTE.css">
+    <link rel="stylesheet" href="../plugins/adminLTE/css/skins/_all-skins.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+	<script src="../plugins/jQuery/jquery-2.2.3.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.min.js"></script>
+
+    <!-- 引入angular的js -->
+    <script type="text/javascript" src="../plugins/angularjs/angular.min.js"></script>
+    <!-- 引入分页相关的JS和CSS -->
+    <script type="text/javascript" src="../plugins/angularjs/pagination.js"></script>
+    <link rel="stylesheet" href="../plugins/angularjs/pagination.css">
+
+    <script type="text/javascript" src="../js/base_pagination.js"></script>
+    <script type="text/javascript" src="../js/controller/baseController.js"></script>
+    <script type="text/javascript" src="../js/service/uploadService.js"></script>
+    <script type="text/javascript" src="../js/service/typeTemplateService.js"></script>
+    <script type="text/javascript">
+        var app = angular.module('myApp',[]);
+        app.controller('myController',function($scope,$http){
+            $scope.status = ["已失效","未付款","待发货","待收货"];
+            $scope.sendStatus =["false","false","true","false"];
+            $scope.payStatus = ["已失效","微信支付","货到付款"];
+            $scope.stat= '';
+            $scope.findAll=function(){
+                $http.get(
+                    '../orders/findAll.do'
+                ).success(
+                    function (response) {
+                        $scope.list = response;
+                    }
+                );
+            }
+            $scope.send=function (orderId,status) {
+                $http.get(
+                    '../orders/send.do?order_id='+orderId+'&status='+status
+                ).success(
+                    function (response) {
+                        location.reload(true);
+                    }
+                );
+            }
+            $scope.count=function (stat) {
+                alert(stat);
+                $http.get(
+                    '../orders/count.do?status='+stat
+                ).success(
+                    function (response) {
+                        $scope.list = response;
+                    }
+                );
+            }
+        });
+    </script>
+</head>
+
+<body class="hold-transition skin-red sidebar-mini" ng-app="myApp" ng-controller="myController" ng-init="findAll()">
+<!--{{list}}-->
+  <!-- .box-body -->
+
+                    <div class="box-header with-border">
+                        <h3 class="box-title">订单管理</h3>
+                    </div>
+
+                    <div class="box-body">
+
+                        <!-- 数据表格 -->
+                        <div class="table-box">
+
+                            <div class="box-tools pull-right">
+                                <div class="has-feedback">
+                                  		状态：<select ng-model="stat">
+                                         	<option value="1">未付款</option>
+                                         	<option value="2">待发货</option>
+                                         	<option value="3">待收货</option>
+                                        </select>
+									<button class="btn btn-default"  ng-click="count(stat)">查询</button>
+                                </div>
+                            </div>
+                            <!--工具栏/-->
+
+			                  <!--数据列表-->
+			                  <table id="dataList" class="table table-bordered table-striped table-hover dataTable">
+			                      <thead>
+			                          <tr>
+										  <th class="sorting">订单号</th>
+									      <th class="sorting">支付价格</th>
+									      <th class="sorting">支付类型</th>
+									      <th class="sorting">状态</th>
+									      <th class="sorting">下单时间</th>
+									      <th class="sorting">发货时间</th>
+					                      <th class="text-center">操作</th>
+			                          </tr>
+			                      </thead>
+			                      <tbody>
+			                          <tr ng-repeat="entity in list">
+				                          <td>{{entity.orderId}}</td>
+									      <td>{{entity.payment}}</td>
+                                          <span>
+									      <td>{{payStatus[entity.paymentType]}}</td>
+                                          </span>
+										  <td>
+		                                  	<span>
+		                                  		{{status[entity.status]}}
+		                                  	</span>
+										  </td>
+										  <td>{{entity.createTime}}</td>
+										  <td>{{entity.updateTime}}</td>
+		                                  <!--<td>
+		                                  	<span>
+		                                  		{{status[entity.auditStatus]}}
+		                                  	</span>
+		                                  </td>	-->
+		                                  <td class="text-center">
+		                                  	  <button class="btn bg-olive btn-xs" ng-if=sendStatus[entity.status] ng-click="send(entity.orderId,entity.status)">发货</button>
+		                                  </td>
+			                          </tr>
+			                      </tbody>
+			                  </table>
+			                  <!--数据列表/-->
+
+
+                        </div>
+                        <!-- 数据表格 /-->
+                        <!-- 分页 -->
+						<tm-pagination conf="paginationConf"></tm-pagination>
+
+                     </div>
+                    <!-- /.box-body -->
+
+</body>
+
+</html>
